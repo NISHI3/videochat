@@ -38,9 +38,9 @@ function getDeviceStream(option) {
 function getScreen() {
     if (screen.isEnabledExtension()) {
         screen.startScreenShare({
-            Width: 480,
-            Height: 360,
-            FrameRate: 20
+            Width: 1440,
+            Height: 900,
+            FrameRate: 1
         }, function(stream) {
             attachMediaStream_($('#local_video')[0], stream);
             localStream = stream;
