@@ -231,8 +231,9 @@ function cleanupVideoElement(element) {
     element.srcObject = null;
 }
 
-const wsUrl = 'ws://localhost:3001/';
+// const wsUrl = 'ws://localhost:3001/';
 // const wsUrl = 'ws://192.168.1.60:3001/';
+const wsUrl = 'ws://172.20.10.3:3001/';
 const ws = new WebSocket(wsUrl);
 ws.onopen = function(evt) {
     console.log('ws open()');
