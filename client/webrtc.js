@@ -10,10 +10,12 @@ RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection |
 RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription;
 
 function startVideo() {
-    getDeviceStream({ video: true, audio: true })
+    // getDeviceStream({ video: true, audio: true })
+    getScreen()
         .then(function(stream) {
-            playVideo(localVideo, stream);
-            localStream = stream;
+            // // playVideo(localVideo, stream);
+            // attachMediaStream_($('#local_video')[0], stream);
+            // localStream = stream;
         })
         .catch(function(error) {
             console.error('mediaDevice.getUserMedia() error:', error);
@@ -33,9 +35,70 @@ function getDeviceStream(option) {
     }
 }
 
+function getScreen() {
+    if (screen.isEnabledExtension()) {
+        screen.startScreenShare({
+            Width: 480,
+            Height: 360,
+            FrameRate: 20
+        }, function(stream) {
+            attachMediaStream_($('#local_video')[0], stream);
+            localStream = stream;
+        })
+    } else {
+        alert('ExtensionまたはAddonをインストールして下さい');
+    }
+}
+
+
+// $(function() {
+//     ('#start-screen').click(function() {
+//         if (screen.isEnabledExtension()) {
+//             screen.startScreenShare({
+//                 Width: 480,
+//                 Height: 360,
+//                 FrameRate: 20
+//             }, function(stream) {
+//                 attachMediaStream_($('#local_video')[0], stream);
+//                 if (existingCall != null) {
+//                     var _peerid = existingCall.peer;
+//                     existingCall.close();
+//                     var call = peer.call(_peerid, stream);
+//                     step3(call);
+//                 }
+//                 localStream = stream;
+
+//             }, function(error) {
+//                 console.log(error);
+//             }, function() {
+//                 alert('ScreenShareを終了しました');
+//             });
+//         } else {
+//             alert('ExtensionまたはAddonをインストールして下さい');
+//         }
+
+//     });
+
+//     //スクリーンシェアを終了
+//     $('#stop-screen').click(function() {
+//         //sc.stopScreenShare();
+//         localStream.stop();
+//     });
+// });
+
 function playVideo(element, stream) {
     element.srcObject = stream;
     element.play();
+}
+
+function attachMediaStream_(videoDom, stream) {
+    // Adapter.jsをインクルードしている場合はそちらのFunctionを利用する
+    if (typeof(attachMediaStream) !== 'undefined' && attachMediaStream) {
+        attachMediaStream(videoDom, stream);
+    } else {
+        videoDom.setAttribute('src', URL.createObjectURL(stream));
+    }
+
 }
 
 // WebRTCを利用する準備をする

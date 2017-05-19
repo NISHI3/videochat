@@ -24,6 +24,7 @@
                 <center>
                     <button type="button" onclick="startVideo();">Start Video</button>
                     <button type="button" onclick="stopVideo();">Stop Video</button>
+                    <p><a href="#" class="pure-button pure-button-success" id="start-screen">スクリーンシェア</a></p>
                 </center>
                 <br />
                 <video id="local_video" autoplay style="width: 480px; height: 360px; border: 1px solid black;"></video>
@@ -53,6 +54,44 @@
     <script src="js/bootstrap.min.js"></script>
     <script type='text/javascript' src='./webrtc.js'></script>
     <script src="js/fullscreen.js"></script>
+    <script src="https://skyway.io/dist/screenshare.js"></script>
+    <script src="https://skyway.io/dist/screenshare.min.js"></script>
+    <script>
+        // var elem = document.getElementById("local_video");
+        // if (elem.requestFullscreen) {
+        //     elem.requestFullscreen();
+        // }
+        // var elem = document.getElementById("remote_video");
+        // if (elem.requestFullscreen) {
+        //     elem.requestFullscreen();
+        // }
+        var videoElement = document.getElementById("remote_video");
+
+        function toggleFullScreen() {
+            if (!document.mozFullScreen && !document.webkitFullScreen) {
+                if (videoElement.mozRequestFullScreen) {
+                    videoElement.mozRequestFullScreen();
+                } else {
+                    videoElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else {
+                    document.webkitCancelFullScreen();
+                }
+            }
+        }
+
+        document.addEventListener("keydown", function(e) {
+            if (e.keyCode == 13) {
+                toggleFullScreen();
+            }
+        }, false);
+        var screen = new SkyWay.ScreenShare({
+            debug: true
+        });
+    </script>
 </body>
 
 </html>
