@@ -40,7 +40,7 @@ function getScreen() {
         screen.startScreenShare({
             Width: 1440,
             Height: 900,
-            FrameRate: 1
+            FrameRate: 20
         }, function(stream) {
             attachMediaStream_($('#local_video')[0], stream);
             localStream = stream;
@@ -89,6 +89,10 @@ function getScreen() {
 function playVideo(element, stream) {
     element.srcObject = stream;
     element.play();
+}
+
+function stopVideo() {
+    localStream.stop();
 }
 
 function attachMediaStream_(videoDom, stream) {
@@ -295,8 +299,8 @@ function cleanupVideoElement(element) {
 }
 
 // const wsUrl = 'ws://localhost:3001/';
-// const wsUrl = 'ws://192.168.1.60:3001/';
-const wsUrl = 'ws://172.20.10.3:3001/';
+// const wsUrl = 'ws://192.168.1.61:3001/';
+const wsUrl = 'ws://192.168.179.2:3001/';
 const ws = new WebSocket(wsUrl);
 ws.onopen = function(evt) {
     console.log('ws open()');
